@@ -1,0 +1,57 @@
+{% extends 'pages/master.html' %}
+
+{% block title %}
+    <title>TRANSACTION </title>
+{% endblock %}
+
+
+{% block content %} 
+
+    <style>
+      body {
+        background: #f4f6f9;
+      }
+
+      .transaction-card {
+        border-radius: 12px;
+      }
+
+      .credit {
+        color: green;
+      }
+
+      .debit {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-4">
+     
+      <h4>Transaction History</h4>
+
+      {% for record in transactions %}
+         <div class="card transaction-card p-3 mb-2 shadow-sm">
+            <div class="d-flex justify-content-between">
+              <div>
+                {{ record.sender.user.email | capfirst  }} made a {{ record.transaction_type }} transaction to {{  record.receiver.user.email }} <br />
+                <small>{{ record.date | date:"D d M Y"}}</small>
+              </div>
+              
+              {% if record.transaction_type == 'transfer' %}
+              <div class="debit">- ₦{{ record.amount }}</div>
+              {% else %}
+              <div class="credit">+ ₦{{ record.amount }}</div>
+              {% endif %}
+            </div>
+          </div>
+      
+          {% empty %}
+          <p> No Transaction Record found </p>
+      {% endfor %}
+
+      
+    </div>
+
+{% endblock %}
